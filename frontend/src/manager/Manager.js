@@ -59,6 +59,8 @@ export default class Manager {
   }
 
   transformNode = i => {
+    if (this.selectedNode === this.nodes[i]) return;
+
     const duration = 900;
     const { camera } = this;
     const cameraPosition = camera.position;
@@ -107,7 +109,7 @@ export default class Manager {
     const factor = 2;
     _.each(this.nodes, (node, i) => {
       if (node === this.selectedNode) return;
-      if (i % 2 === 0) {
+      if (i % 2) {
         node.position.x += Math.sin(d / 1000) * node.random * factor;
         node.position.y += Math.cos(d / 1000) * node.random * factor;
         node.position.z += Math.cos(d / 1000) * node.random * factor;

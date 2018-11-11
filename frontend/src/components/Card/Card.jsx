@@ -8,12 +8,23 @@ class Card extends Component {
     super(props);
   }
 
+  handleClick = (e) => {
+    e.preventDefault();
+    console.log('>>> CLICKED');
+  };
+
   render() {
     const { data } = this.props;
     return (
       <div className="Card">
         <h3>{data.key}</h3>
-        <h3>{data.more_info}</h3>
+        <ul>
+          <li>Date: {data.info.date}</li>
+          <li>Decision: {data.info.decision}</li>
+          <li>Input Hash: {data.info.inputHash}</li>
+          <li>Parameter Hash: {data.info.parameterHash}</li>
+        </ul>
+        <button onClick={this.handleClick}>Copy to Clipboard</button>
       </div>
     )
   }
