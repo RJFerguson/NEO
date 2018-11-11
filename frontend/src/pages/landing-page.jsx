@@ -5,6 +5,8 @@ import {changePage, handleInputChange} from '../helpers/';
 import './styles/landing.css';
 
 class Page extends Component {
+
+    state = {noteTable: [] };
    constructor(props) {
      super(props);
      this.state = {
@@ -21,6 +23,7 @@ class Page extends Component {
      const { key } = this.state;
      changePage(`/token/${key}`)
    }
+
 
    render() {
       const { key, start, end } = this.state;

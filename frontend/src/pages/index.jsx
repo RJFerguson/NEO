@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Api, JsonRpc, RpcError, JsSignatureProvider } from 'eosjs'; // https://github.com/EOSIO/eosjs
 import { TextDecoder, TextEncoder } from 'text-encoding';
-
+import { getTable } from '../manager/Fetcher'; 
 // material-ui dependencies
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -142,7 +142,7 @@ class Index extends Component {
       });
 
       console.log(result);
-      this.getTable();
+      getTable().then(r => this.setState({ noteTable: r.rows }))
     } catch (e) {
       console.log('Caught exception: ' + e);
       if (e instanceof RpcError) {
@@ -151,21 +151,8 @@ class Index extends Component {
     }
   }
 
-  // gets table data from the blockchain
-  // and saves it into the component state: "noteTable"
-  getTable() {
-    const rpc = new JsonRpc(endpoint);
-    rpc.get_table_rows({
-      "json": true,
-      "code": "notechainacc",   // contract who owns the table
-      "scope": "notechainacc",  // scope of the table
-      "table": "notestruct",    // name of the table as specified by the contract abi
-      "limit": 100,
-    }).then(result => this.setState({ noteTable: result.rows }));
-  }
-
   componentDidMount() {
-    this.getTable();
+    getTable().then(r => this.setState({ noteTable: r.rows }))
   }
 
   render() {
