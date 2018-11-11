@@ -28,4 +28,65 @@ export function getTable() {
   }).then(result => result);
 }
 
+export async function handleEvents(event) {
+    // stop default behaviour
+    event.preventDefault();
+
+    // collect form data
+    let account = event.target.account.value;
+    let privateKey = event.target.privateKey.value;
+    let note = event.target.note.value;
+
+    // prepare variables for the switch below to send transactions
+    let actionName = "";
+    let actionData = {};
+
+    // define actionName and action according to event type
+    switch (event.type) {
+      case "submit":
+        actionName = "update";
+        actionData = {
+          user: account,
+          note: note,
+        };
+        break;
+      default:
+        return;
+    }
+
+    // eosjs function call: connect to the blockchain
+    const rpc = new JsonRpc(endpoint);
+    const signatureProvider = new JsSignatureProvider([privateKey]);
+    const api = new Api({
+      rpc,
+      signatureProvider,
+      textDecoder: new TextDecoder(),
+      textEncoder: new TextEncoder()
+    });
+    try {
+      const result = await api.transact({
+        actions: [{
+          account: "notechainacc",
+          name: actionName,
+          authorization: [{
+            actor: account,
+            permission: 'active',
+          }],
+          data: actionData,
+        }]
+      }, {
+        blocksBehind: 3,
+        expireSeconds: 30,
+      });
+
+      console.log(result);
+      return getTable()
+    } catch (e) {
+      console.log('Caught exception: ' + e);
+      if (e instanceof RpcError) {
+        console.log(JSON.stringify(e.json, null, 2));
+      }
+    }
+  }
+
 
