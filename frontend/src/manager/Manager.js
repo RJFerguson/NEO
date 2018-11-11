@@ -87,9 +87,7 @@ export default class Manager {
     new TWEEN.Tween(value)
     .to({ rotation: Math.PI * 2 }, duration)
     .easing(TWEEN.Easing.Quadratic.InOut)
-    .onUpdate(() => {
-      this.selectedNode.rotation.y = value.rotation
-    })
+    .onUpdate(() => this.selectedNode.rotation.y = value.rotation)
     .start();
   };
 
