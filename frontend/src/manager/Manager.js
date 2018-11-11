@@ -37,9 +37,9 @@ export default class Manager {
   }
 
   initNodes(nodes) {
-    const spreadWidth = width * 50,
-      spreadHeight = height * 6,
-      spreadDepth = width * 50;
+    const spreadWidth = width * 20,
+      spreadHeight = height * 20,
+      spreadDepth = width * 20;
 
     _.each(nodes, (object, i) => {
       object.onclick = e => {
