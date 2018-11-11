@@ -17,7 +17,7 @@ render((
       <Route exact path='/chain' component={Index}/>
       <Route exact path='/discover' component={Discover}/>
       <Route exact path='/cards' component={Cards}/>
-      <Route exact path='/key/:key' component={Analysis}/>
+      <Route exact path='/token/:token' component={Analysis}/>
       <Route exact path='/' component={LandingPage}/>
     </Switch>
   </Router>
