@@ -24,7 +24,7 @@ class Page extends Component {
      if (this.state.key && this.state.end && this.state.start) {
        changePage(`/token/${queryString}`)
      } else {
-       console.alert("All inputs must be filled")
+       alert("All inputs must be filled");
      }
    }
 
