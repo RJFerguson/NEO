@@ -6,31 +6,40 @@ const { TextDecoder, TextEncoder } = require('text-encoding');  // node, IE11 an
 
 const endpoint = "http://localhost:8888";
 
+const accounts = {
+  name: "useraaaaaaaa",
+  privateKey: "5K7mtrinTFrVTduSxizUc5hjXJEtTjVTsqSHeBHes1Viep86FP5",
+  publicKey: "EOS6kYgMTCh1iqpq9XGNQbEi8Q6k5GujefN9DSs55dcjVyFAq7B6b"
+};
+
+
+
+
+
 function publisher(account, privateKey, note) {
+  // const note = "test string"
   const defaultPrivateKey = "5JtUScZK2XEp3g9gh7F8bwtPTRAkASmNrrftmx4AxDKD5K4zDnr"; // useraaaaaaaa
   const signatureProvider = new JsSignatureProvider([defaultPrivateKey]);
-  const rpc = new JsonRpc('http://127.0.0.1:8000', { fetch });
+  const rpc = new JsonRpc('http://localhost:8888', { fetch });
   const api = new Api({ rpc, signatureProvider, textDecoder: new TextDecoder(), textEncoder: new TextEncoder() });
   (async () => {
-      const result = await api.transact({
-        actions: [{
-          account: 'eosio.token',
-          name: 'transfer',
-          authorization: [{
-            actor: 'useraaaaaaaa',
-            permission: 'active',
-          }],
-          data: {
-            from: 'useraaaaaaaa',
-            to: 'useraaaaaaab',
-            quantity: '0.0001 SYS',
-            memo: '',
-          },
-        }]
-      }, {
-        blocksBehind: 3,
-        expireSeconds: 30,
-      });
+    const result = await api.transact({
+      actions: [{
+        account: "notechainacc",
+        name: "update",
+        authorization: [{
+          actor: accounts.name,
+          permission: 'active',
+        }],
+        data: {
+          user: accounts.name,
+          note: note,
+        },
+      }]
+    }, {
+      blocksBehind: 3,
+      expireSeconds: 30,
+    });
       console.dir(result);
   })();
 }
