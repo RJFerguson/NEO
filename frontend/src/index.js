@@ -8,7 +8,6 @@ import Cards from './pages/cards';
 import LandingPage from './pages/landing-page';
 
 import './app.css'
-import './index.css';
 
 render((
   <BrowserRouter>

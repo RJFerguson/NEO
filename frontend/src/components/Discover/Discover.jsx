@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 
 import Card from '../Card/Card';
 import Manager from '../../manager/Manager';
-import decisions from '../../data/decisions';
+// import decisions from '../../data/decisions';
+
+import './index.css';
 
 class Discover extends Component {
 
@@ -10,7 +12,7 @@ class Discover extends Component {
     super(props);
     this.state = {
       loading: true,
-      decisions
+      decisions: []
     };
 
     this.nodes = [];

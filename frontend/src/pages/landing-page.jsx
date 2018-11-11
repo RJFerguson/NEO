@@ -4,10 +4,6 @@ import _ from 'lodash';
 
 class Page extends Component {
 
-   constructor(props) {
-     super(props)
-   }
-
    render() {
       return (
          <div className="landing-page">
@@ -19,6 +15,7 @@ class Page extends Component {
            {_.range(360).map(i =>
              <div className="line" style={{ transform: `rotate(${i}deg)`}}/>
            )}
+           <input className="enter-my-key" placeholder="12134-329af940adf"/>
            <div className="bottom-feeder">
               <h3>
                 The first a.i. compliance protocol
