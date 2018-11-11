@@ -1,76 +1,59 @@
 #include <eosiolib/eosio.hpp>
+#include <eosiolib/print.hpp>
 
 using namespace eosio;
 
-CONTRACT neohash : public eosio::contract
-{
-  TABLE neostruct
-  {
-    uint64_t prim_key; // primary key
-    name user;
-    std::string neodata;
-    uint64_t timestamp;
-
-    // primary key
-    auto primary_key() const { return prim_key; }
-
-    uint64_t get_by_time() const { return timestamp; }
-  };
-
-// create a multi-index table and support secondary key
-  typedef eosio::multi_index<name("neostruct"), neostruct, indexed_by<name("getbytime"), const_mem_fun<neostruct, uint64_t, &neostruct::get_by_time>>> 
-    neo_table;
-
-
-  neo_table  _neo;
-
+class [[eosio::contract]] neohash : public eosio::contract {
 
 public:
   using contract::contract;
+  
+  neohash(name receiver, name code,  datastream<const char*> ds): contract(receiver, code, ds) {}
 
-  neochain(name receiver, name code, datastream<const char *> ds) : contract(receiver, code, ds),
-                                                                    _neo(receiver, receiver.value) {}
-
-  ACTION test(name user)
-  {
-    print("Hello, ", name{user});
-  }
-
-  ACTION update(name user, std::string & neodata)
-  {
-    // to sign the action with the given account
-    require_auth(user);
+  [[eosio::action]]
+  void upsert(name user, std::string more_info, uint64_t timestamp) {
+    require_auth( user );
+    neohash_type neohashes(_code, _code.value);
+    auto iterator = neohashes.find(user.value);
+    if( iterator == neohashes.end() )
     {
-      // get object by secordary key
-      auto neo_index = _neo.get_index<name("getbytime")>();
-      auto &note_entry = neo_index.get(timestamp);
-      // update existing note
-      _notes.modify(note_entry, _self, [&](auto &modified_user) {
-        modified_user.note = note;
-        modified_user.timestamp = now();
+      neohashes.emplace(user, [&]( auto& row ) {
+       row.key = user;
+       row.more_info = more_info;
+       row.timestamp = now();
+      });
+    }
+    else {
+      std::string changes;
+      neohashes.modify(iterator, user, [&]( auto& row ) {
+        row.key = user;
+        row.more_info = more_info;
+        row.timestamp = now();
       });
     }
   }
 
-  ACTION submithash(name user, std::string & neodata)
-  {
-    _neo.emplace(_self, [&](auto &user) {
-      user.prim_key = _neo.available_primary_key();
-      user.user = user;
-      user.neodata = neodata;
-      user.timestamp = now();
-    });
+  [[eosio::action]]
+  void erase(name user) {
+    require_auth(user);
+
+    neohash_type neohashes(_self, _code.value);
+
+    auto iterator = neohashes.find(user.value);
+    eosio_assert(iterator != neohashes.end(), "Record does not exist");
+    neohashes.erase(iterator);
   }
 
-  ACTION findHash(name user, std::string & neodata)
-  {
-    _neo.emplace(_self, [&](auto &user) {
-      user.prim_key = _neo.available_primary_key();
-      user.user = user;
-      user.neodata = neodata;
-      user.timestamp = now();
-    });
-  }
+private:
+  struct [[eosio::table]] neo {
+    name key;
+    std::string more_info;
+    uint64_t timestamp;
+    uint64_t primary_key() const { return key.value; }
+
+  };
+  typedef eosio::multi_index<"neo"_n, neo> neohash_type;
+
 };
 
-EOSIO_DISPATCH(neochain, (test)(submithash))
+EOSIO_DISPATCH( neohash, (upsert)(erase))
