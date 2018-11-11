@@ -4,18 +4,6 @@ const { Api, JsonRpc, RpcError, JsSignatureProvider } = require('eosjs');
 const fetch = require('node-fetch');                            // node only; not needed in browsers
 const { TextDecoder, TextEncoder } = require('text-encoding');  // node, IE11 and IE Edge Browsers
 
-const endpoint = "http://localhost:8888";
-
-const accounts = {
-  name: "useraaaaaaaa",
-  privateKey: "5K7mtrinTFrVTduSxizUc5hjXJEtTjVTsqSHeBHes1Viep86FP5",
-  publicKey: "EOS6kYgMTCh1iqpq9XGNQbEi8Q6k5GujefN9DSs55dcjVyFAq7B6b"
-};
-
-
-
-
-
 function publisher(account, privateKey, note) {
   // const note = "test string"
   const defaultPrivateKey = "5JtUScZK2XEp3g9gh7F8bwtPTRAkASmNrrftmx4AxDKD5K4zDnr"; // useraaaaaaaa
@@ -47,14 +35,14 @@ function publisher(account, privateKey, note) {
 exports.publish = publisher;
 
 
-const account = {
-  name: "useraaaaaaaa",
-  privateKey: "5K7mtrinTFrVTduSxizUc5hjXJEtTjVTsqSHeBHes1Viep86FP5",
-  publicKey: "EOS6kYgMTCh1iqpq9XGNQbEi8Q6k5GujefN9DSs55dcjVyFAq7B6b"
-};
-
-let note = ""
-let actionName = "";
-let actionData = {};
-
-publisher(account, account.privateKey, "");
+// const account = {
+//   name: "useraaaaaaaa",
+//   privateKey: "5K7mtrinTFrVTduSxizUc5hjXJEtTjVTsqSHeBHes1Viep86FP5",
+//   publicKey: "EOS6kYgMTCh1iqpq9XGNQbEi8Q6k5GujefN9DSs55dcjVyFAq7B6b"
+// };
+//
+// let note = ""
+// let actionName = "";
+// let actionData = {};
+//
+// publisher(account, account.privateKey, "");
