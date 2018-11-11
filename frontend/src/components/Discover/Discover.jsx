@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import Card from '../Card/Card';
 import Manager from '../../manager/Manager';
-import decisions from '../../data/decisions';
+import decisions from '../../mock/decisions';
 
 import './index.css';
 

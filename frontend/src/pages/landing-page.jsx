@@ -49,7 +49,7 @@ class Page extends Component {
              <button>Go</button>
            </form>
            <div className="bottom-feeder">
-             <h3>The first a.i. compliance protocol</h3>
+             <h3>The First AI Compliance Protocol</h3>
           </div>
        </div>
      )
