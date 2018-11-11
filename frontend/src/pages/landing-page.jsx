@@ -8,7 +8,9 @@ class Page extends Component {
    constructor(props) {
      super(props);
      this.state = {
-       key:''
+       key:'',
+       start: '',
+       end: ''
      }
      this.handleSubmit = this.handleSubmit.bind(this);
      this.handleInputChange = handleInputChange.bind(this);
@@ -21,7 +23,7 @@ class Page extends Component {
    }
 
    render() {
-      const { key } = this.state;
+      const { key, start, end } = this.state;
       return (
          <div className="landing-page">
            <h1>Neo</h1>
@@ -29,12 +31,14 @@ class Page extends Component {
            <div className="ring ring-2"/>
            <div className="ring ring-3"/>
            <div className="ring ring-4"/>
-           {_.range(360).map(i =>
-             <div key={i} className="line" style={{ transform: `rotate(${i}deg)`}}/>
-           )}
+           {_.range(360).map(i => <div key={i} className="line" style={{ transform: `rotate(${i}deg)`}}/> )}
            <form className="enter-my-key" onSubmit={this.handleSubmit}>
-             <label>Enter your Key</label>
+             <label>Your Key</label>
              <input name="key" value={key} onChange={this.handleInputChange} placeholder="12134-329af940adf"/>
+             <label>Start Date</label>
+             <input name="start" value={start} onChange={this.handleInputChange} placeholder="11/9/18"/>
+             <label>End Date</label>
+             <input name="end" value={end} onChange={this.handleInputChange} placeholder="11/11/18"/>
            </form>
            <div className="bottom-feeder">
              <h3>The first a.i. compliance protocol</h3>
