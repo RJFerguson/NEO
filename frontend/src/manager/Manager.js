@@ -9,8 +9,6 @@ export default class Manager {
 
   constructor() {
     this.nodes = [];
-
-    this.duration = 900;
     this.selectedNode = null;
   }
 
@@ -49,6 +47,8 @@ export default class Manager {
 
       const node = new THREE.CSS3DObject(object);
       node.random = Math.random() / 2;
+
+      // todo: update positions based on axis
       node.position.x = Math.random() * spreadWidth - (spreadWidth / 2);
       node.position.y = Math.random() * spreadHeight - (spreadHeight / 2);
       node.position.z = -Math.random() * spreadDepth - (10 * i) + 100000;
@@ -59,7 +59,8 @@ export default class Manager {
   }
 
   transformNode = i => {
-    const { duration, camera } = this;
+    const duration = 900;
+    const { camera } = this;
     const cameraPosition = camera.position;
 
     TWEEN.removeAll();
@@ -99,25 +100,22 @@ export default class Manager {
 
   animate = d => {
     TWEEN.update();
-
-    this.controls.movementSpeed = 0.33 * d;
-    this.controls.update(d);
-
+    this.controls.update();
     this.render();
     requestAnimationFrame(this.animate);
 
+    const factor = 2;
     _.each(this.nodes, (node, i) => {
       if (node === this.selectedNode) return;
-
       if (i % 2 === 0) {
-        node.position.x += Math.sin(d / 1000) * node.random * 2;
-        node.position.y += Math.cos(d / 1000) * node.random * 2;
-        node.position.z += Math.cos(d / 1000) * node.random * 2;
+        node.position.x += Math.sin(d / 1000) * node.random * factor;
+        node.position.y += Math.cos(d / 1000) * node.random * factor;
+        node.position.z += Math.cos(d / 1000) * node.random * factor;
       }
       else {
-        node.position.x -= Math.sin(d / 1000) * node.random * 2;
-        node.position.y += Math.cos(d / 1000) * node.random * 2;
-        node.position.z += Math.cos(d / 1000) * node.random * 2;
+        node.position.x -= Math.sin(d / 1000) * node.random * factor;
+        node.position.y += Math.cos(d / 1000) * node.random * factor;
+        node.position.z += Math.cos(d / 1000) * node.random * factor;
       }
     });
   };
