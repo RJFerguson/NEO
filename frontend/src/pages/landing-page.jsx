@@ -30,7 +30,7 @@ class Page extends Component {
 
 
    render() {
-      const { key, start} = this.state;
+      const { key, start, end } = this.state;
       return (
          <div className="landing-page">
            <h1>NEOS</h1>
@@ -42,8 +42,10 @@ class Page extends Component {
            <form className="enter-my-key" onSubmit={this.handleSubmit}>
              <label>Your Key</label>
              <input name="key" value={key} onChange={this.handleInputChange} placeholder="12134-329af940adf"/>
-             <label>Username</label>
-             <input name="start" value={start} onChange={this.handleInputChange} placeholder="dillfunk"/>
+             <label>Start Date</label>
+             <input name="start" value={start} onChange={this.handleInputChange} placeholder="11/9/18"/>
+             <label>End Date</label>
+             <input name="end" value={end} onChange={this.handleInputChange} placeholder="11/11/18"/>
              <button>Go</button>
            </form>
            <div className="bottom-feeder">
