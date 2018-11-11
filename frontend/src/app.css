@@ -6,7 +6,7 @@ html {
   background: -webkit-linear-gradient(to right, #243B55, #141E30);  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to right, #243B55, #141E30);
   background-size: cover;
-  color: black;
+  color: white;
 }
 
 h1 {
@@ -17,4 +17,80 @@ h1 {
   font-weight: bolder;
   padding: 20px;
   letter-spacing: 10px;
+}
+
+button:focus {outline:0;}
+input:focus {outline:0;}
+textarea:focus {outline:0;}
+
+input, button, a, textarea, input[type=text], input[type=password]  {
+   font-family: Futura, 'Roboto', sans-serif;
+   border-radius: 0px;
+   text-decoration: none;
+   -webkit-box-sizing: border-box;
+   -moz-box-sizing: border-box;
+   box-sizing: border-box;
+   -webkit-appearance: none;
+   -moz-appearance: none;
+   appearance: none;
+   z-index: 100;
+   box-shadow: none !important;
+}
+
+select {
+  width: 100px;
+  margin: 20px;
+  display: block;
+}
+
+input {
+   letter-spacing: 7px;
+   border: none;
+   font-size: 20px;
+   font-weight: normal;
+   outline: none;
+   background-color: transparent;
+   border-radius: 0px;
+   border-bottom: 2px solid white;
+   display: block;
+   color: white;
+   line-height: 20px;
+   width: 300px;
+   margin: 20px;
+}
+
+input:disabled {
+   color: #706E6E;
+}
+
+button:focus {outline:0;}
+input:focus {outline:0;}
+textarea:focus {outline:0;}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: grey;
+    opacity: 0.2; /* Firefox */
+}
+
+label {
+   color: white;
+   letter-spacing: 8px;
+}
+
+a, button {
+   cursor: pointer;
+}
+
+button {
+   background: var(--primary-green);
+   border: none;
+   border-radius: 5px;
+   padding: 10px 50px;
+   text-align: center;
+   margin: 20px;
+   font-size: 15px;
+}
+
+button:disabled {
+  background: var(--light-grey);
 }
