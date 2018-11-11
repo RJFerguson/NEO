@@ -33,7 +33,7 @@ class Page extends Component {
       const { key, start, end } = this.state;
       return (
          <div className="landing-page">
-           <h1>Neo</h1>
+           <h1>NEOS</h1>
            <div className="ring ring-1"/>
            <div className="ring ring-2"/>
            <div className="ring ring-3"/>
