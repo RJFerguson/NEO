@@ -87,7 +87,7 @@ export default class Manager {
 
     // Position transformation
     new TWEEN.Tween(this.selectedNode.position)
-    .to({ ...cameraPosition, z: cameraPosition.z - 2000 }, duration)
+    .to({ ...cameraPosition, z: cameraPosition.z - 1500 }, duration)
     .easing(TWEEN.Easing.Exponential.InOut)
     .start();
 
