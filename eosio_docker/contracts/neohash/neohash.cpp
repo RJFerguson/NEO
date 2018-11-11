@@ -1,6 +1,7 @@
 #include <eosiolib/eosio.hpp>
 #include <eosiolib/print.hpp>
 
+
 using namespace eosio;
 
 class [[eosio::contract]] neohash : public eosio::contract {
@@ -12,7 +13,6 @@ public:
 
   [[eosio::action]]
   void upsert(name user, std::string more_info, uint64_t timestamp) {
-    require_auth( user );
     neohash_type neohashes(_code, _code.value);
     auto iterator = neohashes.find(user.value);
     if( iterator == neohashes.end() )
@@ -33,16 +33,6 @@ public:
     }
   }
 
-  [[eosio::action]]
-  void erase(name user) {
-    require_auth(user);
-
-    neohash_type neohashes(_self, _code.value);
-
-    auto iterator = neohashes.find(user.value);
-    eosio_assert(iterator != neohashes.end(), "Record does not exist");
-    neohashes.erase(iterator);
-  }
 
 private:
   struct [[eosio::table]] neo {
@@ -56,4 +46,4 @@ private:
 
 };
 
-EOSIO_DISPATCH( neohash, (upsert)(erase))
+EOSIO_DISPATCH( neohash, (upsert))
