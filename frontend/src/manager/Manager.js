@@ -50,7 +50,7 @@ export default class Manager {
       const node = new THREE.CSS3DObject(object);
       node.random = Math.random() / 2;
       node.position.x = Math.random() * spreadWidth - (spreadWidth / 2);
-      node.position.y = Math.random() * spreadHeight - (spreadHeight / 2);
+      // node.position.y = Math.random() * spreadHeight - (spreadHeight / 2);
       node.position.z = -Math.random() * spreadDepth - (10 * i) + 100000;
 
       this.nodes.push(node);
@@ -72,9 +72,15 @@ export default class Manager {
       .start();
     }
 
+    // Reset selected node
+    if (this.selectedNode) {
+      this.selectedNode.element.classList.remove('focus');
+    }
+
     // Set selected node
     this.selectedNode = this.nodes[i];
     this.selectedNode.originalPosition = { ...this.selectedNode.position };
+    this.selectedNode.element.classList.add('focus');
 
     // Position transformation
     new TWEEN.Tween(this.selectedNode.position)
@@ -91,9 +97,12 @@ export default class Manager {
     .start();
   };
 
-  animate = (t) => {
+  animate = d => {
     TWEEN.update();
-    this.controls.update();
+
+    this.controls.movementSpeed = 0.33 * d;
+    this.controls.update(d);
+
     this.render();
     requestAnimationFrame(this.animate);
 
@@ -101,14 +110,14 @@ export default class Manager {
       if (node === this.selectedNode) return;
 
       if (i % 2 === 0) {
-        node.position.x += Math.sin(t / 1000) * node.random * 2;
-        node.position.y += Math.cos(t / 1000) * node.random * 2;
-        node.position.z += Math.cos(t / 1000) * node.random * 2;
+        node.position.x += Math.sin(d / 1000) * node.random * 2;
+        node.position.y += Math.cos(d / 1000) * node.random * 2;
+        node.position.z += Math.cos(d / 1000) * node.random * 2;
       }
       else {
-        node.position.x -= Math.sin(t / 1000) * node.random * 2;
-        node.position.y += Math.cos(t / 1000) * node.random * 2;
-        node.position.z += Math.cos(t / 1000) * node.random * 2;
+        node.position.x -= Math.sin(d / 1000) * node.random * 2;
+        node.position.y += Math.cos(d / 1000) * node.random * 2;
+        node.position.z += Math.cos(d / 1000) * node.random * 2;
       }
     });
   };

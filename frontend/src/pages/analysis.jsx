@@ -5,7 +5,7 @@ class Page extends Component {
    render() {
       return (
          <div className="analysis">
-           <h1>Neo</h1>
+           <h1>NEOS</h1>
          </div>
      )
    }
