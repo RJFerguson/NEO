@@ -12,7 +12,8 @@ class Card extends Component {
     const { data } = this.props;
     return (
       <div className="Card">
-        <h1>{data.index}</h1>
+        <h3>{data.key}</h3>
+        <h3>{data.more_info}</h3>
       </div>
     )
   }

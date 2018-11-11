@@ -37,7 +37,7 @@ export default class Manager {
   }
 
   initNodes(nodes) {
-    const spreadWidth = width * 6,
+    const spreadWidth = width * 50,
       spreadHeight = height * 6,
       spreadDepth = width * 50;
 
