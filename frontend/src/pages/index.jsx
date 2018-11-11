@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Api, JsonRpc, RpcError, JsSignatureProvider } from 'eosjs'; // https://github.com/EOSIO/eosjs
 import { TextDecoder, TextEncoder } from 'text-encoding';
-import { getTable } from '../manager/Fetcher'; 
+import { getTable, handleEvents } from '../manager/Fetcher'; 
 // material-ui dependencies
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -14,7 +14,6 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 
 // eosio endpoint
-const endpoint = "http://localhost:8888";
 
 // NEVER store private keys in any source code in your real life development
 // This is for demo purposes only!
@@ -79,75 +78,11 @@ const styles = theme => ({
 
 // Index component
 class Index extends Component {
+  state = {noteTable: [] }
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      noteTable: [] // to store the table rows from smart contract
-    };
-    this.handleFormEvent = this.handleFormEvent.bind(this);
-  }
-
-  // generic function to handle form events (e.g. "submit" / "reset")
-  // push transactions to the blockchain by using eosjs
-  async handleFormEvent(event) {
-    // stop default behaviour
-    event.preventDefault();
-
-    // collect form data
-    let account = event.target.account.value;
-    let privateKey = event.target.privateKey.value;
-    let note = event.target.note.value;
-
-    // prepare variables for the switch below to send transactions
-    let actionName = "";
-    let actionData = {};
-
-    // define actionName and action according to event type
-    switch (event.type) {
-      case "submit":
-        actionName = "update";
-        actionData = {
-          user: account,
-          note: note,
-        };
-        break;
-      default:
-        return;
-    }
-
-    // eosjs function call: connect to the blockchain
-    const rpc = new JsonRpc(endpoint);
-    const signatureProvider = new JsSignatureProvider([privateKey]);
-    const api = new Api({
-      rpc,
-      signatureProvider,
-      textDecoder: new TextDecoder(),
-      textEncoder: new TextEncoder()
-    });
-    try {
-      const result = await api.transact({
-        actions: [{
-          account: "notechainacc",
-          name: actionName,
-          authorization: [{
-            actor: account,
-            permission: 'active',
-          }],
-          data: actionData,
-        }]
-      }, {
-        blocksBehind: 3,
-        expireSeconds: 30,
-      });
-
-      console.log(result);
-      getTable().then(r => this.setState({ noteTable: r.rows }))
-    } catch (e) {
-      console.log('Caught exception: ' + e);
-      if (e instanceof RpcError) {
-        console.log(JSON.stringify(e.json, null, 2));
-      }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.noteTable !== this.state.noteTable) {
+    getTable().then(r => this.setState({ noteTable: r.rows }))
     }
   }
 
@@ -189,7 +124,7 @@ class Index extends Component {
         </AppBar>
         {noteCards}
         <Paper className={classes.paper}>
-          <form onSubmit={this.handleFormEvent}>
+          <form onSubmit={(e) => handleEvents(e)}>
             <TextField
               name="account"
               autoComplete="off"
