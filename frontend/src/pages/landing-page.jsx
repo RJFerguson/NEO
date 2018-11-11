@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import {changePage, handleInputChange} from '../helpers/';
-
+import { handleEvents } from '../manager/Fetcher.js';
 import './styles/landing.css';
 
 class Page extends Component {
@@ -20,6 +20,8 @@ class Page extends Component {
 
    handleSubmit(event) {
      event.preventDefault();
+    
+      handleEvents(event, this.state)
      var queryString = Object.keys(this.state).map(key => key + '=' + this.state.key).join('&');
      if (this.state.key && this.state.end && this.state.start) {
        changePage(`/token/${queryString}`)

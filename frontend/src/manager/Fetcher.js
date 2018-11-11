@@ -16,7 +16,11 @@ let note = ""
 let actionName = "";
 let actionData = {};
 
-
+const accc =  {
+  name: "useraaaaaaaa",
+  privateKey: "5K7mtrinTFrVTduSxizUc5hjXJEtTjVTsqSHeBHes1Viep86FP5",
+  publicKey: "EOS6kYgMTCh1iqpq9XGNQbEi8Q6k5GujefN9DSs55dcjVyFAq7B6b"
+}
 export function getTable() {
   const rpc = new JsonRpc(endpoint);
   return rpc.get_table_rows({
@@ -28,14 +32,15 @@ export function getTable() {
   }).then(result => result);
 }
 
-export async function handleEvents(event) {
+export async function handleEvents(event, dataObject) {
     // stop default behaviour
     event.preventDefault();
-
     // collect form data
-    let account = event.target.account.value;
-    let privateKey = event.target.privateKey.value;
-    let note = event.target.note.value;
+
+
+    let account = accc.name;
+    let privateKey = accc.privateKey;
+    let note = accc.publicKey;
 
     // prepare variables for the switch below to send transactions
     let actionName = "";
