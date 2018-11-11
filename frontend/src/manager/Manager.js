@@ -1,8 +1,7 @@
 import _ from 'lodash';
 
-const { THREE, TWEEN } = window;
-
 let
+  { THREE, TWEEN } = window,
   width = window.innerWidth,
   height = window.innerHeight;
 
@@ -10,6 +9,9 @@ export default class Manager {
 
   constructor() {
     this.nodes = [];
+
+    this.duration = 900;
+    this.selectedNode = null;
   }
 
   init(node) {
@@ -17,7 +19,7 @@ export default class Manager {
     this.scene = new THREE.Scene();
 
     this.camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
-    this.camera.position.z = 9000;
+    this.camera.position.z = 100000;
 
     this.renderer = new THREE.CSS3DRenderer();
     const { domElement } = this.renderer;
@@ -39,34 +41,83 @@ export default class Manager {
       spreadHeight = height * 6,
       spreadDepth = width * 50;
 
-    _.each(nodes, (node, i) => {
-      const object = new THREE.CSS3DObject(node);
-      object.random = Math.random() / 2;
-      object.position.x = Math.random() * spreadWidth - (spreadWidth / 2);
-      object.position.y = Math.random() * spreadHeight - (spreadHeight / 2);
-      object.position.z = Math.random() * spreadDepth - (10 * i);
+    _.each(nodes, (object, i) => {
+      object.onclick = e => {
+        e.preventDefault();
+        this.transformNode(i);
+      };
 
-      this.nodes.push(object);
-      this.scene.add(object);
+      const node = new THREE.CSS3DObject(object);
+      node.random = Math.random() / 2;
+      node.position.x = Math.random() * spreadWidth - (spreadWidth / 2);
+      // node.position.y = Math.random() * spreadHeight - (spreadHeight / 2);
+      node.position.z = -Math.random() * spreadDepth - (10 * i) + 100000;
+
+      this.nodes.push(node);
+      this.scene.add(node);
     });
   }
 
-  animate = (t) => {
+  transformNode = i => {
+    const { duration, camera } = this;
+    const cameraPosition = camera.position;
+
+    TWEEN.removeAll();
+
+    // Return currently selected back to its original position
+    if (this.selectedNode && this.selectedNode.originalPosition) {
+      new TWEEN.Tween(this.selectedNode.position)
+      .to(this.selectedNode.originalPosition, duration)
+      .easing(TWEEN.Easing.Exponential.InOut)
+      .start();
+    }
+
+    // Reset selected node
+    if (this.selectedNode) {
+      this.selectedNode.element.classList.remove('focus');
+    }
+
+    // Set selected node
+    this.selectedNode = this.nodes[i];
+    this.selectedNode.originalPosition = { ...this.selectedNode.position };
+    this.selectedNode.element.classList.add('focus');
+
+    // Position transformation
+    new TWEEN.Tween(this.selectedNode.position)
+    .to({ ...cameraPosition, z: cameraPosition.z - 2000 }, duration)
+    .easing(TWEEN.Easing.Exponential.InOut)
+    .start();
+
+    // Rotation transformation
+    const value = { rotation: 0 };
+    new TWEEN.Tween(value)
+    .to({ rotation: Math.PI * 2 }, duration)
+    .easing(TWEEN.Easing.Quadratic.InOut)
+    .onUpdate(() => this.selectedNode.rotation.y = value.rotation)
+    .start();
+  };
+
+  animate = d => {
     TWEEN.update();
-    this.controls.update();
+
+    this.controls.movementSpeed = 0.33 * d;
+    this.controls.update(d);
+
     this.render();
     requestAnimationFrame(this.animate);
 
     _.each(this.nodes, (node, i) => {
+      if (node === this.selectedNode) return;
+
       if (i % 2 === 0) {
-        node.position.x += Math.sin(t / 10000) * node.random;
-        node.position.y += Math.cos(t / 10000) * node.random;
-        node.position.z += Math.cos(t / 10000) * node.random;
+        node.position.x += Math.sin(d / 1000) * node.random * 2;
+        node.position.y += Math.cos(d / 1000) * node.random * 2;
+        node.position.z += Math.cos(d / 1000) * node.random * 2;
       }
       else {
-        node.position.x -= Math.sin(t / 10000) * node.random;
-        node.position.y += Math.cos(t / 10000) * node.random;
-        node.position.z += Math.cos(t / 10000) * node.random;
+        node.position.x -= Math.sin(d / 1000) * node.random * 2;
+        node.position.y += Math.cos(d / 1000) * node.random * 2;
+        node.position.z += Math.cos(d / 1000) * node.random * 2;
       }
     });
   };
