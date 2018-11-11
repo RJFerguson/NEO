@@ -3,6 +3,8 @@ import './styles/landing.css';
 import _ from 'lodash';
 
 class Page extends Component {
+    state = {noteTable: [] };
+  
 
    render() {
       return (
