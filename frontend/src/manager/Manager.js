@@ -3,8 +3,7 @@ import _ from 'lodash';
 let
   { THREE, TWEEN } = window,
   width = window.innerWidth,
-  height = window.innerHeight,
-  UNFOCUS_CLASS = 'unfocus';
+  height = window.innerHeight;
 
 export default class Manager {
 
@@ -65,8 +64,7 @@ export default class Manager {
 
     TWEEN.removeAll();
 
-    _.each(this.nodes, node => node.element.classList.add(UNFOCUS_CLASS));
-
+    // Return currently selected back to its original position
     if (this.selectedNode && this.selectedNode.originalPosition) {
       new TWEEN.Tween(this.selectedNode.position)
       .to(this.selectedNode.originalPosition, duration)
@@ -74,15 +72,17 @@ export default class Manager {
       .start();
     }
 
+    // Set selected node
     this.selectedNode = this.nodes[i];
     this.selectedNode.originalPosition = { ...this.selectedNode.position };
-    this.selectedNode.element.classList.remove(UNFOCUS_CLASS);
 
+    // Position transformation
     new TWEEN.Tween(this.selectedNode.position)
     .to({ ...cameraPosition, z: cameraPosition.z - 2000 }, duration)
     .easing(TWEEN.Easing.Exponential.InOut)
     .start();
 
+    // Rotation transformation
     const value = { rotation: 0 };
     new TWEEN.Tween(value)
     .to({ rotation: Math.PI * 2 }, duration)
