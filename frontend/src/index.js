@@ -1,5 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
 import Index from './pages/index';
 
-ReactDOM.render(<Index />, document.getElementById('root'));
+render(
+  <Index />,
+  document.getElementById('root')
+);
