@@ -12,7 +12,7 @@ class Card extends Component {
     const { data } = this.props;
     return (
       <div className="Card">
-        {JSON.stringify(data, null, 2)}
+        <h1>{data.index}</h1>
       </div>
     )
   }
