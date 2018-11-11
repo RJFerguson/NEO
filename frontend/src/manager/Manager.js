@@ -1,15 +1,18 @@
 import _ from 'lodash';
 
-const { THREE, TWEEN } = window;
-
 let
+  { THREE, TWEEN } = window,
   width = window.innerWidth,
-  height = window.innerHeight;
+  height = window.innerHeight,
+  UNFOCUS_CLASS = 'unfocus';
 
 export default class Manager {
 
   constructor() {
     this.nodes = [];
+
+    this.duration = 900;
+    this.selectedNode = null;
   }
 
   init(node) {
@@ -40,6 +43,11 @@ export default class Manager {
       spreadDepth = width * 50;
 
     _.each(nodes, (object, i) => {
+      object.onclick = e => {
+        e.preventDefault();
+        this.transformCard(i);
+      };
+
       const node = new THREE.CSS3DObject(object);
       node.random = Math.random() / 2;
       node.position.x = Math.random() * spreadWidth - (spreadWidth / 2);
@@ -51,6 +59,40 @@ export default class Manager {
     });
   }
 
+  transformCard = i => {
+    const { duration, camera } = this;
+    const cameraPosition = camera.position;
+
+    TWEEN.removeAll();
+
+    _.each(this.cards, card => card.element.classList.add(UNFOCUS_CLASS));
+
+    if (this.selectedNode && this.selectedNode.originalPosition) {
+      new TWEEN.Tween(this.selectedNode.position)
+      .to(this.selectedNode.originalPosition, duration)
+      .easing(TWEEN.Easing.Exponential.InOut)
+      .start();
+    }
+
+    this.selectedNode = this.nodes[i];
+    this.selectedNode.originalPosition = { ...this.selectedNode.position };
+    this.selectedNode.element.classList.remove(UNFOCUS_CLASS);
+
+    new TWEEN.Tween(this.selectedNode.position)
+    .to({ ...cameraPosition, z: cameraPosition.z - 2000 }, duration)
+    .easing(TWEEN.Easing.Exponential.InOut)
+    .start();
+
+    const value = { rotation: 0 };
+    new TWEEN.Tween(value)
+    .to({ rotation: Math.PI * 2 }, duration)
+    .easing(TWEEN.Easing.Quadratic.InOut)
+    .onUpdate(() => {
+      this.selectedNode.rotation.y = value.rotation
+    })
+    .start();
+  };
+
   animate = (t) => {
     TWEEN.update();
     this.controls.update();
@@ -58,6 +100,8 @@ export default class Manager {
     requestAnimationFrame(this.animate);
 
     _.each(this.nodes, (node, i) => {
+      if (node === this.selectedNode) return;
+
       if (i % 2 === 0) {
         node.position.x += Math.sin(t / 1000) * node.random * 2;
         node.position.y += Math.cos(t / 1000) * node.random * 2;
