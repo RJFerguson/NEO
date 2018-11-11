@@ -20,8 +20,12 @@ class Page extends Component {
 
    handleSubmit(event) {
      event.preventDefault();
-     const { key } = this.state;
-     changePage(`/token/${key}`)
+     var queryString = Object.keys(this.state).map(key => key + '=' + this.state.key).join('&');
+     if (this.state.key && this.state.end && this.state.start) {
+       changePage(`/token/${queryString}`)
+     } else {
+       console.alert("All inputs must be filled")
+     }
    }
 
 
@@ -42,6 +46,7 @@ class Page extends Component {
              <input name="start" value={start} onChange={this.handleInputChange} placeholder="11/9/18"/>
              <label>End Date</label>
              <input name="end" value={end} onChange={this.handleInputChange} placeholder="11/11/18"/>
+             <button>Go</button>
            </form>
            <div className="bottom-feeder">
              <h3>The first a.i. compliance protocol</h3>

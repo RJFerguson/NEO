@@ -81,7 +81,7 @@ a, button {
 }
 
 button {
-   background: var(--primary-green);
+   background: white;
    border: none;
    border-radius: 5px;
    padding: 10px 50px;

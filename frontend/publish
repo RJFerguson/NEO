@@ -1,0 +1,7 @@
+echo  "Publish"
+set -x
+git add .
+git commit --allow-empty -m  "Latest Working Build"
+git push origin master
+set +x
+echo "done"
