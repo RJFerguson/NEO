@@ -20,6 +20,7 @@ class Card extends Component {
         <h3>{data.key}</h3>
         <ul>
           <li>Date: {data.info.date}</li>
+          <li>Code Version: {data.info.aiVersion}</li>
           <li>Decision: {data.info.decision}</li>
           <li>Input Hash: {data.info.inputHash}</li>
           <li>Parameter Hash: {data.info.parameterHash}</li>
