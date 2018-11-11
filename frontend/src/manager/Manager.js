@@ -50,7 +50,7 @@ export default class Manager {
       const node = new THREE.CSS3DObject(object);
       node.random = Math.random() / 2;
       node.position.x = Math.random() * spreadWidth - (spreadWidth / 2);
-      // node.position.y = Math.random() * spreadHeight - (spreadHeight / 2);
+      node.position.y = Math.random() * spreadHeight - (spreadHeight / 2);
       node.position.z = -Math.random() * spreadDepth - (10 * i) + 100000;
 
       this.nodes.push(node);
