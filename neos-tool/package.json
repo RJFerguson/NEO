@@ -1,0 +1,26 @@
+{
+  "name": "neos-publisher",
+  "version": "1.0.7",
+  "description": "Make it quick and easy to publish your a.i. outputs ",
+  "main": "index,js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RJFerguson/NEO.git"
+  },
+  "keywords": [
+    "neos-publisher"
+  ],
+  "author": "Bane",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RJFerguson/NEO/issues"
+  },
+  "homepage": "https://github.com/RJFerguson/NEO#readme",
+  "dependencies": {
+    "eosjs": "^20.0.0-beta2",
+    "node-fetch": "^2.2.1"
+  }
+}
