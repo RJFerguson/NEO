@@ -1,5 +1,22 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Index from './pages/index';
+import { render } from 'react-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
-ReactDOM.render(<Index />, document.getElementById('root'));
+import Index from './pages/index';
+import Discover from './components/Discover/Discover';
+import Cards from './pages/cards';
+import LandingPage from './pages/landing-page';
+
+import './app.css'
+
+render((
+  <BrowserRouter>
+    <Switch>
+      <Route exact path='/' component={LandingPage}/>
+      <Route exact path='/chain' component={Index}/>
+      <Route exact path='/discover' component={Discover}/>
+      <Route exact path='/cards' component={Cards}/>
+    </Switch>
+
+  </BrowserRouter>
+), document.getElementById('root'))
