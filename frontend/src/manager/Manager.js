@@ -45,7 +45,7 @@ export default class Manager {
     _.each(nodes, (object, i) => {
       object.onclick = e => {
         e.preventDefault();
-        this.transformCard(i);
+        this.transformNode(i);
       };
 
       const node = new THREE.CSS3DObject(object);
@@ -59,13 +59,13 @@ export default class Manager {
     });
   }
 
-  transformCard = i => {
+  transformNode = i => {
     const { duration, camera } = this;
     const cameraPosition = camera.position;
 
     TWEEN.removeAll();
 
-    _.each(this.cards, card => card.element.classList.add(UNFOCUS_CLASS));
+    _.each(this.nodes, node => node.element.classList.add(UNFOCUS_CLASS));
 
     if (this.selectedNode && this.selectedNode.originalPosition) {
       new TWEEN.Tween(this.selectedNode.position)
