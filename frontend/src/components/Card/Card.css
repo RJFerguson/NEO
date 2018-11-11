@@ -9,6 +9,46 @@
   font-size: 40px;
 }
 
+.Card .info {
+  font-size: 30px;
+}
+
+.Card .context {
+  font-size: 25px;
+  padding: 5px;
+  font-family: 'courier'
+}
+
+.Card .decision {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.Card .decision [data-approved="true"] {
+  color: green;
+}
+
+.Card .decision [data-approved="false"] {
+  color: red;
+}
+
+.Card .decisionTitle {
+  margin-bottom: 0;
+}
+
+.Card .context {
+  background-color: black;
+  color: #00FF00;
+}
+
+.Card .params {
+  margin-bottom: 5px;
+}
+
+.Card .label {
+  font-weight: bold;
+}
+
 .Card h3 {
   padding: 0;
   margin: 0 0 30px 0;

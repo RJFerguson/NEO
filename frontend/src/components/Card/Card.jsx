@@ -18,12 +18,23 @@ class Card extends Component {
     return (
       <div className="Card">
         <h3>{data.key}</h3>
-        <ul>
-          <li>Date: {data.info.date}</li>
-          <li>Decision: {data.info.decision}</li>
-          <li>Input Hash: {data.info.inputHash}</li>
-          <li>Parameter Hash: {data.info.parameterHash}</li>
-        </ul>
+        <div className="info">
+          <div>{data.info.date}</div>
+          <div>Code Version {data.info.aiVersion}</div>
+        </div>
+        <div className="decision">Decision: <span data-approved={data.info.decision.substr(0, 1) == 'A'}>{data.info.decision}</span></div>
+        <div className="decisionTitle">Decision Data</div>
+        <div className="context">
+          <div className="params">
+            <div className="label">InputHash:</div>
+            <div className="value">${data.info.inputHash}</div>
+          </div>
+          <div className="params">
+            <div className="label">ParameterHash:</div>
+            <div className="value">${data.info.parameterHash}</div>
+          </div>
+        </div>
+
         <button onClick={this.handleClick}>Copy to Clipboard</button>
       </div>
     )
